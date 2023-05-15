@@ -17,7 +17,6 @@ class Film(Base):
     description = Column(String)
     date_debut = Column(Date)
     date_fin = Column(Date)
-    is_active = Column(Boolean(),default=True)
 
     owner_id =  Column(Integer,ForeignKey("user.id"))
     owner = relationship("User",back_populates="films")

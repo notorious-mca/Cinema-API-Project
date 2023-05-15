@@ -5,11 +5,11 @@ from datetime import date,datetime, timedelta
 
 #shared properties
 class FilmBase(BaseModel):
-    titre : str
-    realisateur : str
-    acteurs_principaux : str
-    duree : str
-    age_min : int
+    titre : Optional[str] = None
+    realisateur : Optional[str] = None
+    acteurs_principaux : Optional[str] = None
+    duree : Optional[str] = None
+    age_min : Optional[str] = None
     langue : Optional[str] = "Français"
 
     description : Optional[str] = None
