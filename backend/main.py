@@ -5,11 +5,13 @@ from fastapi.staticfiles import StaticFiles
 from core.config import settings
 from apis.contoleur import api_router
 from db.session import engine   
-from db.models import Base  
+from db.models import Base
+from webapp.controleur import api_router as web_app_router
 
 
 def include_router(app):
 	app.include_router(api_router)
+	app.include_router(web_app_router)
 
 
 def create_tables():

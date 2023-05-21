@@ -2,15 +2,38 @@
 
 
 {% block title %}
-  <title>Films Catalogue</title>
+  <title>EFREI Cinema</title>
 {% endblock %}
 
 {% block content %}
   <div class="container">
   <div class="row">
     <div class="col">
-      <h1 class="display-5">Hey there !</h1>
+      <br/>
+      <h1 class="display-5">EFREIWOOD..</h1>
+      <br/>
+      <hr class="dropdown-divider"></li>
+      <br/>
     </div>
   </div>
-  
+  <div class="row">
+    {% for job in jobs %}
+      <div class="col-lg-4 col-md-3 col-sm-10 mr-auto">
+        {% with obj=job %}
+        {% include "components/cards.html" %}
+      {% endwith %}
+
+        {% if loop.index %3 %}
+          </div>
+        {% else %}
+          </div></div><br><div class="row">
+        {% endif %}
+    {% endfor %}
+</div>
+</div>
+
+<div>
+  <script type="module" src="https://md-block.verou.me/md-block.js">Test</script>
+</div>
+
 {% endblock %}

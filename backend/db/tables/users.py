@@ -9,6 +9,5 @@ class User(Base):
     username = Column(String,unique=True,nullable=False)
     email = Column(String,nullable=False,unique=True,index=True)
     hashed_password = Column(String,nullable=False)
-    is_active = Column(Boolean(),default=True)
     is_admin = Column(Boolean(),default=False)
     films = relationship("Film",back_populates="owner")
