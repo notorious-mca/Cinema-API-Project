@@ -1,0 +1,65 @@
+{% extends "shared/base.html" %}
+
+
+{% block title %}
+  <title>Film Details</title>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+  <div class="row">
+    <div class="col">
+        <br/>
+      <h1 class="display-5"><strong class="text-light bg-dark">{{film.titre}}</strong><strong> Détails</strong></h1>
+      <br/>
+      <hr class="dropdown-divider"></li>
+      <br/>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div>
+          <img alt="Film cover" class="img-thumbnail" src="https://otakufr.s3.eu-west-3.amazonaws.com/one_piece_chapitre_1080_resume_complet_3b05f77545.jpg" />
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-5 ml-auto d-flex align-items-center mt-4 mt-md-0">
+        <div class="container">
+        <div class="row">
+          <table class="table table-striped table-hover">
+            
+            <tbody> 
+              <tr>
+                <br/>
+                <th scope="row">Titre: </th>
+                <td colspan="3">{{film.titre}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Réalisateurs: </th>
+                <td colspan="3">{{film.realisateur}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Acteurs Principaux: </th>
+                <td colspan="3">{{film.acteurs_principaux}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Langue: </th>
+                <td colspan="3">{{film.langue}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Description: </th>
+                <td colspan="3">{{film.description}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Durée</th>
+                <td colspan="2">{{film.duree}}</td>
+              </tr>
+            </tbody>
+        </table>
+      </div>
+      </div>
+    </div>
+    </div>
+  </div>
+{% endblock %}

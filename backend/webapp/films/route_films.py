@@ -1,10 +1,16 @@
-from fastapi import APIRouter
-from fastapi import Request,Depends
+from typing import Optional
+
+from db.tables.users import User
+from fastapi import APIRouter, Request, Depends, status, responses
+from fastapi.security.utils import get_authorization_scheme_param
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
-
-from db.instances.films import list_all_films
+from db.instances.films import list_all_films, list_film, search_film
+from apis.routes.route_login import get_current_user_from_token
 from db.session import get_db
+from webapp.films.forms import FilmCreateForm
+from schemas.films import FilmCreate
+from db.instances.films import create_new_film
 
 
 
@@ -13,8 +19,47 @@ router = APIRouter(include_in_schema=False)
 
 
 @router.get("/")
-async def home(request: Request,db: Session = Depends(get_db)):
-    jobs = list_all_films(db=db)
-    return templates.TemplateResponse(
-        "general_pages/homepage.html", {"request": request,"jobs":jobs}
-    )
+async def home(request: Request, db: Session = Depends(get_db), msg:str = None):
+    films = list_all_films(db=db)
+    return templates.TemplateResponse("general_pages/homepage.html", {"request": request, "films":films, "msg":msg})
+
+
+@router.get("/films/details/{id}")             #new
+def film_detail(id:int,request: Request,db:Session = Depends(get_db)):    
+    film = list_film(id=id, db=db)
+    return templates.TemplateResponse("films/detail.html", {"request": request, "film":film})
+
+
+@router.get("/search/")
+def search(request: Request, db: Session = Depends(get_db), query: Optional[str] = None):
+    films = search_film(query, db=db)
+    return templates.TemplateResponse("general_pages/homepage.html", {"request": request, "films": films})
+
+
+
+@router.get("/post-a-job/")       #new 
+def create_film(request: Request, db: Session = Depends(get_db)):
+    return templates.TemplateResponse("films/create_film.html", {"request": request})
+
+
+@router.post("/post-a-job/")    #new
+async def create_film(request: Request, db: Session = Depends(get_db)):
+    form = FilmCreateForm(request)
+    await form.load_data()
+    if form.is_valid():
+        try:
+            token = request.cookies.get("access_token")
+            scheme, param = get_authorization_scheme_param(
+                token
+            )  # scheme will hold "Bearer" and param will hold actual token value
+            current_user: User = get_current_user_from_token(token=param, db=db)
+            film = FilmCreate(**form.__dict__)
+            film = create_new_film(film=film, db=db, owner_id=current_user.id)
+            return responses.RedirectResponse(
+                f"/films/details/{film.id}", status_code=status.HTTP_302_FOUND
+            )
+        except Exception as e:
+            print(e)
+            form.__dict__.get("errors").append("You might not be logged in, In case problem persists please contact us.")
+            return templates.TemplateResponse("films/create_film.html", form.__dict__)
+    return templates.TemplateResponse("films/create_film.html", form.__dict__)

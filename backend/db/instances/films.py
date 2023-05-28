@@ -5,14 +5,11 @@ from db.tables.films import Film
 
 
 def create_new_film(film:FilmCreate, db:Session, owner_id:int):
-    try:
-        film_object = Film(**film.dict(), owner_id=owner_id)
-        db.add(film_object)
-        db.commit()
-        db.refresh(film_object)
-        return film_object
-    except Exception as e:
-        return e
+    film_object = Film(**film.dict(), owner_id=owner_id)
+    db.add(film_object)
+    db.commit()
+    db.refresh(film_object)
+    return film_object
 
 # Get a film by a specific ID
 def list_film(id: int, db: Session):
@@ -45,3 +42,9 @@ def delete_film_by_id(id: int,db: Session,owner_id):
     existing_film.delete(synchronize_session=False)
     db.commit()
     return 1
+
+
+# Search a film
+def search_film(query: str, db: Session):
+    films = db.query(Film).filter(Film.titre.contains(query))
+    return films

@@ -9,8 +9,9 @@ class FilmBase(BaseModel):
     realisateur : Optional[str] = None
     acteurs_principaux : Optional[str] = None
     duree : Optional[str] = None
-    age_min : Optional[str] = None
+    age_min : Optional[int] = None
     langue : Optional[str] = "Français"
+    #cover : Optional[str] = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiFzTA1xqPC1yUhWY0WYtE2Gx2lkAMmVztuQ&usqp=CAU"
 
     description : Optional[str] = None
     date_debut : Optional[date] = datetime.now().date()
@@ -35,6 +36,7 @@ class ShowFilm(FilmBase):
     duree : str
     age_min : int
     langue : Optional[str]
+    #cover : Optional[str]
 
     description : Optional[str]
     date_debut : Optional[date]
