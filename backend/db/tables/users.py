@@ -11,3 +11,4 @@ class User(Base):
     hashed_password = Column(String,nullable=False)
     is_admin = Column(Boolean(),default=False)
     films = relationship("Film",back_populates="owner")
+    seances = relationship("Seance",back_populates="owner")

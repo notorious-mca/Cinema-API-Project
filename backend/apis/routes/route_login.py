@@ -17,8 +17,8 @@ router = APIRouter()
 oauth2_scheme = OAuth2PasswordBearerWithCookie(tokenUrl="/login/token")
 
 
-def authenticate_user(username: str, password: str, db: Session = Depends(get_db)):
-    user = get_user(username=username, db=db)
+def authenticate_user(email: str, password: str, db: Session = Depends(get_db)):
+    user = get_user(email=email, db=db)
     print(user)
     if not user:
         return False
@@ -36,6 +36,7 @@ def login_for_access_token(
 ):
     user = authenticate_user(form_data.username, form_data.password, db)
     if not user:
+        print("user_not_authenticated !")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="E-mail invalide",
@@ -59,7 +60,7 @@ def get_current_user_from_token(token: str = Depends(oauth2_scheme), db: Session
             raise credentials_exception
     except JWTError:
         raise credentials_exception
-    user = get_user(username=username, db=db)
+    user = get_user(email=username, db=db)
     if user is None:
         raise credentials_exception
     return user

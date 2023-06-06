@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean,Date, ForeignKey
+from sqlalchemy import Column, Integer, String,Date, ForeignKey
 from sqlalchemy.orm import relationship
 
 from db.base_class import Base
@@ -13,14 +13,13 @@ class Film(Base):
     age_min = Column(Integer,nullable=False)
     langue = Column(String,nullable=False)
 
-    # Maybe, à voir
     description = Column(String)
     date_debut = Column(Date)
     date_fin = Column(Date)
-    #cover = Column(String)
 
     owner_id =  Column(Integer,ForeignKey("user.id"))
     owner = relationship("User",back_populates="films")
+    seances = relationship("Seance",back_populates="film_seances")
     
     
     

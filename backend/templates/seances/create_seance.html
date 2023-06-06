@@ -1,0 +1,73 @@
+{% extends "shared/base.html" %}
+
+
+{% block title %}
+  <title>Poster un film</title>
+{% endblock %}
+
+{% block content %}
+
+  <div class="container">
+    <div class="row">
+    </div>
+
+    <div class="row my-5">
+      <h3 class="text-center display-4"><strong>Poster une séance 🍿</strong></h3>
+
+      <div class="text-danger font-weight-bold">
+        {% for error in errors %}
+          <li>{{error}}</li>
+        {% endfor %}
+      </div>
+      
+      <br/>
+
+      <hr class="dropdown-divider"></li>
+
+      <br/>
+
+      <form method="POST">
+
+            <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label"><strong>Sélectionner le film :</strong></label>
+                <select class="form-select" required name="film_id">
+                  {% for film in films %}
+                    <option value="{{ film.id }}">{{ film.titre }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+
+
+
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label"><strong>Ville *</strong></label>
+          <input type="text" required class="form-control" name="ville" value="{{ville}}" placeholder="Entrez la ville de la séance">
+        </div>
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label"><strong>Adresse *</strong></label>
+          <input type="text" required placeholder="Entrez l'adresse de la séance" name="adresse" value="{{adresse}}" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label"><strong>Date début</strong></label>
+          <input type="date" placeholder="Entrez la date de début de la séance" name="date_debut" value="{{date_debut}}" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label"><strong>Date fin</strong></label>
+          <input type="date" placeholder="Entrez la date de fin de la séance" name="date_fin" value="{{date_fin}}" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label"><strong>Durée *</strong></label>
+            <input type="datetime" required required placeholder="Entrez la durée de la séance" name="duree" value="{{duree}}" class="form-control">
+          </div>
+        <div class="mb-3">
+          <label for="exampleFormControlTextarea1" class="form-label"><strong>Heure début *</strong></label>
+          <input type="time" required placeholder="Entrez l'heure du début de la séance" name="heure_debut" value="{{heure_debut}}" class="form-control">
+
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+
+    </div>
+  </div>
+  {% endblock %}

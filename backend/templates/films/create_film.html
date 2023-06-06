@@ -1,0 +1,64 @@
+{% extends "shared/base.html" %}
+
+
+{% block title %}
+  <title>Poster un film</title>
+{% endblock %}
+
+{% block content %}
+  <!-- Authentication Pop-up -->
+  {% with msg=msg %}    
+  {% include "components/alerts.html" %}
+  {% endwith %}
+
+  <div class="container">
+    <div class="row">
+    </div>
+
+    <div class="row my-5">
+      <h3 class="text-center display-4"><strong>Poster un film 🎥</strong></h3>
+
+      <div class="text-danger font-weight-bold">
+        {% for error in errors %}
+          <li>{{error}}</li>
+        {% endfor %}
+      </div>
+      
+      <br/>
+
+      <hr class="dropdown-divider"></li>
+
+      <br/>
+
+      <form method="POST">
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label"><strong>Titre</strong></label>
+          <input type="text" required class="form-control" name="titre" value="{{titre}}" placeholder="Entrez le titre du film">
+        </div>
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label"><strong>Réalisateurs</strong></label>
+          <input type="text" required placeholder="Entrez les réalisateurs" name="realisateur" value="{{realisateur}}" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label"><strong>Acteurs principaux</strong></label>
+          <input type="text" required placeholder="Entrez les acteurs principaux" name="acteurs_principaux" value="{{acteurs_principaux}}" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label"><strong>Durée</strong></label>
+          <input type="text" required placeholder="Entrez la durée" name="duree" value="{{duree}}" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label"><strong>Age min.</strong></label>
+            <input type="number" required placeholder="Entrez l'age minimum" name="age_min" value="{{age_min}}" class="form-control">
+          </div>
+        <div class="mb-3">
+          <label for="exampleFormControlTextarea1" class="form-label"><strong>Description</strong></label>
+          <textarea class="form-control" required name="description" id="exampleFormControlTextarea1" rows="3">{{description}}</textarea>
+          <div id="help" class="form-text">Donnez une brève description du film...</div>
+
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+  {% endblock %}

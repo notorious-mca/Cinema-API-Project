@@ -24,7 +24,7 @@ async def home(request: Request, db: Session = Depends(get_db), msg:str = None):
     return templates.TemplateResponse("general_pages/homepage.html", {"request": request, "films":films, "msg":msg})
 
 
-@router.get("/films/details/{id}")             #new
+@router.get("/film-webapp/details/{id}")
 def film_detail(id:int,request: Request,db:Session = Depends(get_db)):    
     film = list_film(id=id, db=db)
     return templates.TemplateResponse("films/detail.html", {"request": request, "film":film})
@@ -36,13 +36,12 @@ def search(request: Request, db: Session = Depends(get_db), query: Optional[str]
     return templates.TemplateResponse("general_pages/homepage.html", {"request": request, "films": films})
 
 
+@router.get("/film-webapp/create-film/") 
+def create_film(request: Request, db: Session = Depends(get_db), msg:str = None):
+    return templates.TemplateResponse("films/create_film.html", {"request": request, "msg":msg})
 
-@router.get("/post-a-job/")       #new 
-def create_film(request: Request, db: Session = Depends(get_db)):
-    return templates.TemplateResponse("films/create_film.html", {"request": request})
 
-
-@router.post("/post-a-job/")    #new
+@router.post("/film-webapp/create-film/")
 async def create_film(request: Request, db: Session = Depends(get_db)):
     form = FilmCreateForm(request)
     await form.load_data()
@@ -56,10 +55,10 @@ async def create_film(request: Request, db: Session = Depends(get_db)):
             film = FilmCreate(**form.__dict__)
             film = create_new_film(film=film, db=db, owner_id=current_user.id)
             return responses.RedirectResponse(
-                f"/films/details/{film.id}", status_code=status.HTTP_302_FOUND
+                f"/film-webapp/details/{film.id}", status_code=status.HTTP_302_FOUND
             )
         except Exception as e:
             print(e)
-            form.__dict__.get("errors").append("You might not be logged in, In case problem persists please contact us.")
+            form.__dict__.get("errors").append("Authentifiez-vous avant de poster un film !")
             return templates.TemplateResponse("films/create_film.html", form.__dict__)
     return templates.TemplateResponse("films/create_film.html", form.__dict__)

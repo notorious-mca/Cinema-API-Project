@@ -1,0 +1,65 @@
+{% extends "shared/base.html" %}
+
+
+{% block title %}
+  <title>Séance Details</title>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+  <div class="row">
+    <div class="col">
+        <br/>
+      <h1 class="display-5"><strong class="text-light bg-dark">Séance ({{seance.film_titre}})</strong><strong> Détails</strong></h1>
+      <br/>
+      <hr class="dropdown-divider"></li>
+      <br/>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div>
+          <img alt="Film cover" class="img-thumbnail" src="https://otakufr.s3.eu-west-3.amazonaws.com/one_piece_chapitre_1080_resume_complet_3b05f77545.jpg" />
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-5 ml-auto d-flex align-items-center mt-4 mt-md-0">
+        <div class="container">
+        <div class="row">
+          <table class="table table-striped table-hover">
+            
+            <tbody> 
+              <tr>
+                <br/>
+                <th scope="row">Ville: </th>
+                <td colspan="3">{{seance.ville}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Adresse: </th>
+                <td colspan="3">{{seance.adresse}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Heure début: </th>
+                <td colspan="3">{{seance.heure_debut}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Durée: </th>
+                <td colspan="3">{{seance.duree}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Date Début: </th>
+                <td colspan="3">{{seance.date_debut}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Date Fin:</th>
+                <td colspan="2">{{seance.date_fin}}</td>
+              </tr>
+            </tbody>
+        </table>
+      </div>
+      </div>
+    </div>
+    </div>
+  </div>
+{% endblock %}

@@ -2,20 +2,16 @@
 
 
 {% block title %}
-  <title>EFREI Cinema</title>
+  <title>EFREI Cinema Séances</title>
 {% endblock %}
 
 {% block content %}
-  <!-- Authentication Pop-up -->
-  {% with msg=msg %}    
-  {% include "components/alerts.html" %}
-  {% endwith %}
 
   <div class="container">
   <div class="row">
     <div class="col">
       <br/>
-      <h1 class="display-5"><strong>CINEMA API ...</strong></h1>
+      <h1 class="display-5"><strong> SÉANCES ...</strong></h1>
       <br/>
       <hr class="dropdown-divider"></li>
       <br/>
@@ -23,10 +19,10 @@
   </div>
   
   <div class="row">
-    {% for film in films %}
+    {% for seance in seances %}
       <div class="col-lg-4 col-md-3 col-sm-10 mr-auto">
-        {% with obj=film %}
-        {% include "components/cards.html" %}
+        {% with obj=seance %}
+        {% include "components/seance-cards.html" %}
       {% endwith %}
 
         {% if loop.index %3 %}

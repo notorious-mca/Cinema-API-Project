@@ -20,22 +20,22 @@ class FilmCreateForm:
         self.realisateur = form.get("realisateur")
         self.acteurs_principaux = form.get("acteurs_principaux")
         self.duree = form.get("duree")
-        self.age_min = form.get("age_min")
+        self.age_min = int(form.get("age_min"))
         self.description = form.get("description")
 
     def is_valid(self):
         if not self.titre :
-            self.errors.append("A valid title is required")
+            self.errors.append("Veuillez entrer un titre")
         if not self.realisateur :
-            self.errors.append("Valid realisateur is required")
-        if not self.acteurs_principaux or not len(self.company) >= 1:
-            self.errors.append("A valid a-p is required")
+            self.errors.append("Veuillez entrer un/des réalisateur(s)")
+        if not self.acteurs_principaux:
+            self.errors.append("Veuillez entrer un/des acteur(s) principal(aux)")
         if not self.duree :
-            self.errors.append("A valid duree is required")
+            self.errors.append("Veuillez entrer la durée")
         if not self.age_min or type(self.age_min) != int:
-            self.errors.append("A valid age_min is required")
+            self.errors.append("Veuillez entrer l'âge minimum requis")
         if not self.description or not len(self.description) >= 20:
-            self.errors.append("Description too short")
+            self.errors.append("Description trop courte.")
         if not self.errors:
             return True
         return False

@@ -16,7 +16,7 @@ router = APIRouter()
 
 # =========================== POST : Create a new film ===========================
 @router.post("/create-film/")
-def create_job(film:FilmCreate, db: Session = Depends(get_db),current_user:User = Depends(get_current_user_from_token)):
+def create_film(film:FilmCreate, db: Session = Depends(get_db),current_user:User = Depends(get_current_user_from_token)):
     film = create_new_film(film=film, db=db, owner_id=current_user.id)
     if type(film) == Film:
         return {"msg":"Film successfully created !"}
@@ -77,7 +77,7 @@ def delete_film(id: int, db: Session = Depends(get_db), current_user: User = Dep
     if not film:
         return HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"Film with id={id} does not exist")
     print(f"Film Owner ID = {film.owner_id}, Cuurent user ID = {current_user.id}, Current user Admin = {current_user.is_admin}")
-    if (film.owner_id == current_user.id) or (current_user.is_admin):
+    if (film.owner_id == current_user.id) or (current_user.id == 1):
         delete_film_by_id(id=id,db=db,owner_id=current_user.id)
         return {"msg":"Film successfully deleted."}
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Accès refusé !")
