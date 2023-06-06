@@ -10,6 +10,7 @@ from apis.routes.route_login import get_current_user_from_token
 from db.session import get_db
 from webapp.films.forms import FilmCreateForm
 from schemas.films import FilmCreate
+from fastapi.responses import RedirectResponse
 from db.instances.films import create_new_film
 
 
@@ -38,6 +39,11 @@ def search(request: Request, db: Session = Depends(get_db), query: Optional[str]
 
 @router.get("/film-webapp/create-film/") 
 def create_film(request: Request, db: Session = Depends(get_db), msg:str = None):
+    token = request.cookies.get("access_token")
+    scheme, param = get_authorization_scheme_param(token)  # scheme will hold "Bearer" and param will hold actual token value
+    current_user: User = get_current_user_from_token(token=param, db=db)
+    if not type(current_user) == User:
+        return templates.TemplateResponse("auth/login.html")
     return templates.TemplateResponse("films/create_film.html", {"request": request, "msg":msg})
 
 

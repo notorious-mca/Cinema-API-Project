@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    {% extends "shared/base.html" %}
+
+
+    {% block title %}
+      <title>Séance par ville</title>
+    {% endblock %}
+
+{% block content %}
+<body>
+    
+    <div class="container">
+        <div class="row">
+          <div class="col">
+            <br/>
+            <h1 class="display-5"><strong>Séance(s) de la ville <strong class="text-light bg-dark">{{ville}}</strong></strong></h1>
+            <br/>
+            <hr class="dropdown-divider">
+            <br/>
+        </div>
+    </div>
+
+    <div class="row">
+      {% for seance in seances %}
+        <div class="col-lg-4 col-md-3 col-sm-10 mr-auto">
+        {% with obj=seance %}
+      		{% include "components/seance-cards.html" %}
+    	  {% endwith %}
+
+          {% if loop.index %3 %}
+            </div>
+          {% else %}
+            </div></div><br><div class="row">
+          {% endif %}
+      {% endfor %}
+  </div>
+</div>
+{% endblock %}
+
+</body>
+
+</html>

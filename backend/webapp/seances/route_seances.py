@@ -11,6 +11,7 @@ from db.session import get_db
 from webapp.seances.forms import SeanceCreateForm
 from schemas.seances import SeanceCreate
 from db.tables.films import Film
+from db.tables.seances import Seance
 from db.instances.seances import create_new_seance
 
 
@@ -62,3 +63,68 @@ async def create_seance(request: Request, db: Session = Depends(get_db)):
             form.__dict__.get("errors").append("Authentifiez-vous avant de poster un film !")
             return templates.TemplateResponse("seances/create_seance.html", form.__dict__)
     return templates.TemplateResponse("films/create_film.html", form.__dict__)
+
+
+
+
+@router.get('/seance-by-city/{selected_ville}') 
+def showSeanceByCityWeb(selected_ville, request: Request, db: Session = Depends(get_db)):
+    seances = db.query(Seance).filter(Seance.ville == selected_ville).all()
+    return templates.TemplateResponse('/seances/seance-by-city.html', {"request": request,"seances":seances, "ville":selected_ville})
+
+
+@router.get('/search-seance-by-city/')
+def searchSession(request: Request, db: Session = Depends(get_db)):
+        seances = db.query(Seance).all()
+        villes = sorted(set([seance.ville for seance in seances]), key=lambda x: x.lower())
+        return templates.TemplateResponse('/seances/search-seance.html', {"request": request,"villes":villes})
+        
+@router.post('/search-seance-by-city/')
+async def searchSession(request: Request, db: Session = Depends(get_db)):
+        form = await request.form() 
+        selected_ville = form.get("ville")
+        return responses.RedirectResponse(
+                f"/seances-webapp/seance-by-city/{selected_ville}", status_code=status.HTTP_302_FOUND
+            )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@router.post('/seances') 
+def showSeanceByCity(selected_ville, db: Session = Depends(get_db)):
+    seance_list = db.query(Seance).filter(Seance.ville == selected_ville).all()
+    seances = []
+
+    if len(seance_list) != 0:
+        for seance in seance_list:
+            seances.append({'film_id' : seance.film_id, 'ville' : seance.ville, 'heure_debut': seance.heure_debut, 'date_debut':seance.date_debut,
+            'date_fin' : seance.date_fin, 'adresseSalleCine' : seance.adresseSalleCine})
+        return jsonify({'seances' : seances})
+    else:
+        return jsonify({'msg' : 'No data available'})
