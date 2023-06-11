@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    {% extends "shared/base.html" %}
+
+
+    {% block title %}
+      <title>Séances par film</title>
+    {% endblock %}
+
+{% block content %}
+<body>
+    
+    <div class="container">
+        <div class="row">
+          <div class="col">
+            <br/>
+            <h1 class="display-5"><strong>Séance(s) du film <strong class="text-light bg-dark">{{titre}}</strong></strong></h1>
+            <br/>
+            <hr class="dropdown-divider">
+            <br/>
+            <h6 class="display-7"><strong>Plus de détails sur le film </strong><button type="submit" class="btn btn-success"><a class="nav-link active" aria-current="page" href="/film-webapp/details/{{film_id}}" style="color:white">ICI</a></button></h6>
+            <br/>
+            <hr class="dropdown-divider">
+            <br/>
+        </div>
+    </div>
+
+    <div class="row">
+      {% for seance in seances %}
+        <div class="col-lg-4 col-md-3 col-sm-10 mr-auto">
+        {% with obj=seance %}
+      		{% include "components/seance-cards.html" %}
+    	  {% endwith %}
+
+          {% if loop.index %3 %}
+            </div>
+          {% else %}
+            </div></div><br><div class="row">
+          {% endif %}
+      {% endfor %}
+  </div>
+</div>
+{% endblock %}
+
+</body>
+
+</html>

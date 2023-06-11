@@ -5,7 +5,6 @@ from datetime import date,datetime, timedelta
 
 #shared properties
 class SeanceBase(BaseModel):
-    film_id : Optional[int] = None
     ville : Optional[str] = None
     adresse : Optional[str] = None
     date_debut : Optional[date] = datetime.now().date()
@@ -31,6 +30,20 @@ class ShowSeance(SeanceBase):
     duree : str
     date_debut : Optional[date]
     date_fin : Optional[date]
+
+    class Config():  #to convert non dict obj to json
+        orm_mode = True
+
+
+class ShowSeanceForUser(SeanceBase):
+    id : int
+    ville : str
+    adresse : str
+    heure_debut : str
+    duree : str
+    date_debut : Optional[date]
+    date_fin : Optional[date]
+    film_titre : Optional[str]
 
     class Config():  #to convert non dict obj to json
         orm_mode = True

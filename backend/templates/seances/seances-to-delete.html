@@ -1,0 +1,64 @@
+{% extends "shared/base.html" %}
+
+
+{% block title %}
+  <title>Supprimer les séances</title>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+  <div class="row">
+    <div class="col">
+      <h1 class="display-5 text-center text-danger mb-3">Supprimer les séances</h1>
+    </div>
+    <div id="result" class="text-danger text-bold lead"></div>
+  </div>
+
+  <div class="row">
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">ID.</th>
+            <th scope="col">Film</th>
+            <th scope="col">Ville</th>
+            <th scope="col">Adresse</th>
+            <th scope="col">Date Début</th>
+            <th scope="col">Date fin</th>
+            <th scope="col">Durée</th>
+            <th scope="col">Heure début</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for seance in seances %}
+            <tr>
+                <th scope="row">{{seance.id}}</th>
+                <td>{{seance.film_titre}}</td>
+                <td>{{seance.ville}}</td>
+                <td>{{seance.adresse}}</td>
+                <td>{{seance.date_debut}}</td>
+                <td>{{seance.date_fin}}</td>
+                <td>{{seance.duree}}</td>
+                <td>{{seance.heure_debut}}</td>
+                
+                <td><button class="btn btn-danger btn-sm" onclick="delete_seance({{seance.id}})">Supprimer</button></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script type="text/javascript">
+    function delete_seance(id){
+        fetch('/seances/delete/'+id,{
+            method:'DELETE',})
+        .then(response => response.json())
+        .then(document.getElementById('result').innerHTML = "Refreshing...")
+        .then(data => document.getElementById('result').innerHTML = data.detail);
+        
+    }
+</script>
+{% endblock %}

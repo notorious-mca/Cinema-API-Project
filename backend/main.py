@@ -1,6 +1,7 @@
 #main.py 
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+from starlette.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from core.config import settings
 from apis.contoleur import api_router

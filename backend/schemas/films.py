@@ -44,3 +44,21 @@ class ShowFilm(FilmBase):
 
     class Config():  #to convert non dict obj to json
         orm_mode = True
+
+
+#this will be used to format the response to not to have id,owner_id etc
+class ShowFilmForUser(FilmBase):
+    id : int
+    titre : str
+    realisateur : str
+    acteurs_principaux : str
+    duree : str
+    age_min : int
+    langue : Optional[str]
+
+    description : Optional[str]
+    date_debut : Optional[date]
+    date_fin : Optional[date]
+
+    class Config():  #to convert non dict obj to json
+        orm_mode = True

@@ -35,11 +35,15 @@ def seance_detail(id:int,request: Request,db:Session = Depends(get_db)):
 
 @router.get("/create-seance/")
 def create_seance(request: Request, db: Session = Depends(get_db)):
-    token = request.cookies.get("access_token")
-    scheme, param = get_authorization_scheme_param(token)  # scheme will hold "Bearer" and param will hold actual token value
-    current_user: User = get_current_user_from_token(token=param, db=db)
-    films = db.query(Film).filter(Film.owner_id == current_user.id).all()
-    return templates.TemplateResponse("seances/create_seance.html", {"request": request, "films":films})
+    try:
+        token = request.cookies.get("access_token")
+        scheme, param = get_authorization_scheme_param(token)  # scheme will hold "Bearer" and param will hold actual token value
+        current_user: User = get_current_user_from_token(token=param, db=db)
+        films = db.query(Film).filter(Film.owner_id == current_user.id).all()
+        return templates.TemplateResponse("seances/create_seance.html", {"request": request, "films":films})
+    except Exception as e:
+        print(e)
+        return responses.RedirectResponse(url="/auth-webapp/login")
 
 
 @router.post("/create-seance/")    #new
@@ -74,57 +78,64 @@ def showSeanceByCityWeb(selected_ville, request: Request, db: Session = Depends(
 
 
 @router.get('/search-seance-by-city/')
-def searchSession(request: Request, db: Session = Depends(get_db)):
+def searchSeance(request: Request, db: Session = Depends(get_db)):
         seances = db.query(Seance).all()
         villes = sorted(set([seance.ville for seance in seances]), key=lambda x: x.lower())
         return templates.TemplateResponse('/seances/search-seance.html', {"request": request,"villes":villes})
         
 @router.post('/search-seance-by-city/')
-async def searchSession(request: Request, db: Session = Depends(get_db)):
+async def searchSeance(request: Request, db: Session = Depends(get_db)):
         form = await request.form() 
         selected_ville = form.get("ville")
         return responses.RedirectResponse(
                 f"/seances-webapp/seance-by-city/{selected_ville}", status_code=status.HTTP_302_FOUND
             )
 
+@router.get("/my-seances/")
+def my_seances(request: Request, db: Session = Depends(get_db)):
+    try:
+        token = request.cookies.get("access_token")
+        scheme, param = get_authorization_scheme_param(token)  # scheme will hold "Bearer" and param will hold actual token value
+        current_user: User = get_current_user_from_token(token=param, db=db)
+    
+        seances = db.query(Seance).filter(Seance.owner_id == current_user.id).all()
+        return templates.TemplateResponse("seances/seances.html", {"request": request, "seances":seances})
+    except Exception as e:
+        print(e)
+        return responses.RedirectResponse(url="/auth-webapp/login")
 
 
+@router.get("/delete-seance/")
+def show_seances_to_delete(request: Request, db: Session = Depends(get_db)):
+    try:
+        token = request.cookies.get("access_token")
+        scheme, param = get_authorization_scheme_param(token)
+        current_user: User = get_current_user_from_token(token=param, db=db)
+        seances = db.query(Seance).filter(Seance.owner_id == current_user.id).all()
+        return templates.TemplateResponse("seances/seances-to-delete.html", {"request": request, "seances":seances})
+    except Exception as e:
+        print(e)
+        return responses.RedirectResponse(url="/auth-webapp/login")
 
 
+@router.get("/seance-by-film/{selected_film}") 
+def showSeanceByFilm(selected_film, request: Request, db: Session = Depends(get_db)):
+    film = db.query(Film).filter(Film.titre == selected_film).first()
+    seances = db.query(Seance).filter(Seance.film_id == film.id).all()
+    return templates.TemplateResponse("films/seance-by-film.html", {"request": request, "seances":seances, "titre":film.titre, "film_id":film.id})
 
 
+@router.get('/search-seance-by-film/')
+def searchSeanceByFilm(request: Request, db: Session = Depends(get_db)):
+        films = db.query(Film).all()
+        titres = sorted([film.titre for film in films], key=lambda x: x.lower())
+        return templates.TemplateResponse('/films/search-seance-for-film.html', {"request": request,"titres":titres})
+        
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@router.post('/seances') 
-def showSeanceByCity(selected_ville, db: Session = Depends(get_db)):
-    seance_list = db.query(Seance).filter(Seance.ville == selected_ville).all()
-    seances = []
-
-    if len(seance_list) != 0:
-        for seance in seance_list:
-            seances.append({'film_id' : seance.film_id, 'ville' : seance.ville, 'heure_debut': seance.heure_debut, 'date_debut':seance.date_debut,
-            'date_fin' : seance.date_fin, 'adresseSalleCine' : seance.adresseSalleCine})
-        return jsonify({'seances' : seances})
-    else:
-        return jsonify({'msg' : 'No data available'})
+@router.post('/search-seance-by-film/')
+async def searchSeanceByFilm(request: Request, db: Session = Depends(get_db)):
+        form = await request.form() 
+        selected_film = form.get("titre")
+        return responses.RedirectResponse(
+                f"/seances-webapp/seance-by-film/{selected_film}", status_code=status.HTTP_302_FOUND
+            )

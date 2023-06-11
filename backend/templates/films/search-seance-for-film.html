@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    {% extends "shared/base.html" %}
+
+
+    {% block title %}
+      <title>Rechercher séance pour un film</title>
+    {% endblock %}
+
+{% block content %}
+<body>
+    
+    <div class="container">
+        <div class="row">
+          <div class="col">
+            <br/>
+            <h1 class="display-5"><strong>Sélectionner un film 🎞️</strong></h1>
+
+            <br/>
+            <!-- Ajouter un formulaire pour envoyer les données -->
+            <form method="POST">
+
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label"><strong>Sélectionner le film :</strong></label>
+                    <select class="form-select" required name="titre">
+                      {% for titre in titres %}
+                        <option>{{ titre }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                
+                <br/>
+
+                <button type="submit" class="btn btn-primary">Valider</button>
+            </div>
+        </div>
+{% endblock %}
+
+</body>
+
+</html>

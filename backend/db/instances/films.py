@@ -25,7 +25,7 @@ def list_all_films(db : Session):
 
 # Update film by ID
 def update_film_by_id(id:int, film: FilmCreate,db: Session,owner_id):
-    existing_film = db.query(Film).filter(Film.id == id)
+    existing_film = db.query(Film).filter(Film.id == id, Film.owner_id==owner_id)
     if not existing_film.first():
         return 0
     film.__dict__.update(owner_id=owner_id)  #update dictionary with new key value of owner_id

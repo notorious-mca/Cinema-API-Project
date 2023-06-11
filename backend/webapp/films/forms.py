@@ -12,6 +12,7 @@ class FilmCreateForm:
         self.acteurs_principaux: Optional[str] = None
         self.duree: Optional[str] = None
         self.age_min: Optional[int] = None
+        self.langue: Optional[str] = None
         self.description: Optional[str] = None
 
     async def load_data(self):
@@ -20,6 +21,7 @@ class FilmCreateForm:
         self.realisateur = form.get("realisateur")
         self.acteurs_principaux = form.get("acteurs_principaux")
         self.duree = form.get("duree")
+        self.langue = form.get("langue") if form.get("langue") else "Français"
         self.age_min = int(form.get("age_min"))
         self.description = form.get("description")
 
